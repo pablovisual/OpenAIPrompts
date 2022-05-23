@@ -1,0 +1,62 @@
+.title {
+  font-size: 1.6em;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+}
+
+.prompts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10%;
+}
+
+.button {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 15px;
+}
+
+.response_title {
+  font-size: 1.6em;
+  font-weight: bold;
+}
+
+.responses {
+  display: flex;
+  border-radius: 15px;
+  flex-direction: column;
+  background-color: lightgray;
+  padding: 10px;
+  margin-top: 15px;
+  width: 52%;
+}
+
+.prompt_title {
+  display: flex;
+  align-items: center;
+}
+
+.prompt_title > p:not(:last-child) {
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-right: 4em;
+}
+
+.prompt_response {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prompt_response > p:not(:last-child) {
+  font-size: 1.2em;
+  font-weight: bold;
+  padding-right: 3.2em;
+}
+
+.prompt_responseText {
+  padding-right: 1em;
+}
