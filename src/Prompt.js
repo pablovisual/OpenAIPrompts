@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './Prompt.css';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { HiChevronDown } from 'react-icons/hi';
+import { MenuItem, MenuList, Popper, ClickAwayListener, Grow, Paper } from '@mui/material';
 
 function Prompt() {
   const [value, setValue] = useState('');
@@ -115,6 +117,58 @@ function Prompt() {
 
   }, []);
 
+
+  //this is for presets on prompts
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
+
+  const handleToggle = (e) => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleClose = (event, text) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+      return;
+    }
+
+    if (text !== undefined) {
+      addPrompt({
+        prompt: text,
+      })
+
+      callIT({
+        prompt: text,
+        temperature: 0.5,
+        max_tokens: 64,
+        top_p: 1.0,
+        frequency_penalty: 0.0,
+        presence_penalty: 0.0,
+      });
+
+    }
+
+    setOpen(false);
+  };
+
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  // return focus to the button when we transitioned from !open -> open
+  const prevOpen = useRef(open);
+  useEffect(() => {
+    if (prevOpen.current === true && open === false) {
+      anchorRef.current.focus();
+    }
+
+    prevOpen.current = open;
+  }, [open]);
+
   return (
     <div className="prompts">
       <p className="title">Fun with AI</p>
@@ -130,6 +184,54 @@ function Prompt() {
           onChange={(e) => setValue(e.target.value)} />
 
         <div className="button">
+          <Button
+            ref={anchorRef}
+            id="composition-button"
+            aria-controls={open ? 'composition-menu' : undefined}
+            aria-expanded={open ? 'true' : undefined}
+            aria-haspopup="true"
+            onClick={handleToggle}
+            variant="contained"
+            endIcon={<HiChevronDown />}>
+            Examples
+          </Button>
+
+          <Popper
+            open={open}
+            anchorEl={anchorRef.current}
+            role={undefined}
+            placement="bottom-start"
+            transition
+            disablePortal
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                style={{
+                  transformOrigin:
+                    placement === 'bottom-start' ? 'left top' : 'left bottom',
+                }}
+              >
+                <Paper>
+                  <ClickAwayListener onClickAway={handleClose}>
+                    <MenuList
+                      autoFocusItem={open}
+                      id="composition-menu"
+                      aria-labelledby="composition-button"
+                      onKeyDown={handleListKeyDown}
+                    >
+                      <MenuItem onClick={ (event) => handleClose(event, event.target.innerText) }>Write a poem about a dog on skis</MenuItem>
+                      <MenuItem onClick={ (event) => handleClose(event, event.target.innerText) }>write a review on a resturant</MenuItem>
+                      <MenuItem onClick={ (event) => handleClose(event, event.target.innerText) }>How does a telescope work?</MenuItem>
+                      <MenuItem onClick={ (event) => handleClose(event, event.target.innerText) }>what is summer?</MenuItem>
+                      <MenuItem onClick={ (event) => handleClose(event, event.target.innerText) }>Tell me about the night sky.</MenuItem>
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper>
+
           <Button
             onClick={newPrompt}
             color="primary"

@@ -15,7 +15,7 @@
 
 .button {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-top: 15px;
 }
 
@@ -48,13 +48,12 @@
 .prompt_response {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .prompt_response > p:not(:last-child) {
   font-size: 1.2em;
   font-weight: bold;
-  padding-right: 3.2em;
+  padding-right: 3em;
 }
 
 .prompt_responseText {
