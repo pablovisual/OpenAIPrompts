@@ -210,6 +210,7 @@ function Prompt() {
                 style={{
                   transformOrigin:
                     placement === 'bottom-start' ? 'left top' : 'left bottom',
+                    backgroundColor: 'lightgray',
                 }}
               >
                 <Paper>
@@ -231,6 +232,14 @@ function Prompt() {
               </Grow>
             )}
           </Popper>
+
+          <Button
+            color="error"
+            variant="contained"
+            onClick={() => {localStorage.clear();}}
+          >
+            Delete All
+          </Button>
 
           <Button
             onClick={newPrompt}
